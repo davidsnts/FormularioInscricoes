@@ -1,0 +1,71 @@
+<%- include ('partials/header') %>
+<%- include ('partials/navbar') %>
+<body>
+    <div class="container mt-2">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-2">Informações Pessoais:</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" action="/cadastrar-infos">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="nome" placeholder="Digite seu nome"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="email" placeholder="Digite seu e-mail"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" class="form-control" name="telefone" placeholder="Digite seu telefone"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <input type="date" class="form-control" name="datanasc" placeholder="Data de nascimento"
+                            onchange="verificarIdadade()" id="dataNasc" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" class="form-control" id="telefoneResponsavel" name="telRespondavel"
+                            placeholder="Telefone do responsável" style="display: none;">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="nomeResponsavel" name="nomeRespondavel"
+                            placeholder="Nome do responsável" style="display: none;">
+                    </div>
+
+                    <div class="forn-group ">
+                        <span>Endereço: </span>
+                        <input type="text" class="form-control mb-2"  name="rua" placeholder="Rua e Nº" required>
+                        <input type="text" class="form-control mb-2"  name="bairro" placeholder="Bairro" required>
+                        <input type="text" class="form-control mb-2"  name="cidade" placeholder="Cidade" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-dark">Cadastrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function verificarIdadade(dataNasc) {
+        const dataNascimento = document.getElementById("dataNasc").value;
+        const dataNascimentoObj = new Date(dataNascimento);
+        const dataAtual = new Date();
+        const idade = dataAtual.getFullYear() - dataNascimentoObj.getFullYear();
+        const telResponsavel = document.getElementById('telefoneResponsavel');
+        const nomeResponsavel = document.getElementById('nomeResponsavel');
+
+        if (idade >= 18) {
+            telResponsavel.style.display = 'none';
+            nomeResponsavel.style.display = 'none';
+            nomeResponsavel.removeAttribute('required');
+            telResponsavel.removeAttribute('required');
+        } else {
+            telResponsavel.style.display = 'Block';
+            nomeResponsavel.style.display = 'Block';
+            nomeResponsavel.setAttribute('required', 'true');
+            telResponsavel.setAttribute('required', 'true');
+        }
+    }
+</script>        
+<%- include ('partials/footer') %>
