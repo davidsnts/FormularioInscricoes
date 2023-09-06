@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const db = require('./db');
 const formularios_router = require('./routers/formularios-router');
 const rotas = [ formularios_router ];
 
@@ -14,3 +15,4 @@ app.get('/', (req, res) => {
 });
 
 app.set('view engine', 'ejs');
+
