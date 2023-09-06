@@ -1,5 +1,9 @@
 const express = require('express');
 const app = express();
+const formularios_router = require('./routers/formularios-router');
+const rotas = [ formularios_router ];
+
+app.use("/", rotas);
 
 app.listen(3000, () => {
     console.log("Executando na porta 3000");
