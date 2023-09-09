@@ -4,7 +4,7 @@
     <div class="container mt-2">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-2">Informações Pessoais:</h5>
+                <h5 class="mb-2">Retiro espiritual - 2024</h5>
             </div>
             <div class="card-body" style="display: flex; flex-direction: column;">
                 <div>                    
@@ -53,7 +53,7 @@
                         </div>   
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-dark w-100 mt-1 fw-bolder">FINALIZAR</button>          
+                    <button type="submit" class="btn btn-dark w-100 mt-1 fw-bolder" onclick="salvar()">FINALIZAR</button>          
                 </div>
             </div>
         </div>
@@ -124,5 +124,32 @@
             telResponsavel.setAttribute('required', 'true');
         }
     }
+
+    function salvar(){            
+
+            const url = '/finalizarPagamento';
+            const data = {
+                inscritos
+            };
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', 
+                },
+                body: JSON.stringify(data), 
+            };      
+            
+            fetch(url, options)
+                .then(response => response.json()) 
+                .then(() => {
+                    location.reload();             
+                })
+                .catch(error => {
+                    console.error('Erro ao fazer a requisição:', error);                    
+                });
+        }
+
+    
 </script>        
 <%- include ('../partials/footer') %>

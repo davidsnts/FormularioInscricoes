@@ -1,0 +1,28 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/navbar') %>
+<body>
+    <form class="row g-3 container mt-1" style="display: flex; flex-direction: column; width: 100%;">
+        <div class="col-6">
+          <label for="inputEmail4" class="form-label">Nome do fomulário</label>
+          <input type="email" class="form-control" id="nome-formulario">
+        </div>        
+        <div class="col-6">
+          <label for="inputAddress" class="form-label">Valor da inscrição</label>
+          <input type="number" class="form-control" id="valor" placeholder="Valor">
+        </div>
+        <div style="display: flex; flex-direction: row;">
+          <div class="p-1">
+            <label for="inputAddress2" class="form-label p-0">Data inicial da inscrição</label>
+            <input type="date" class="form-control" id="data-inicial" placeholder="Data inical">
+          </div>
+          <div class="p-1">
+            <label for="inputCity" class="form-label">Data Final da inscrição</label>
+            <input type="date" class="form-control" id="data-final" placeholder="Data final">
+          </div>
+        </div>        
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Alterar</button>
+        </div>
+    </form>
+</body> 
+<%- include ('../partials/footer') %>
