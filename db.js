@@ -8,12 +8,12 @@ const db = mysql2.createConnection({
     database: 'geracaoeleita',
 });
 
-try {
-    db.connect();
-    db.end();
-} catch (error) {
-    console.error('Erro ao conectar ao MySQL:', error);
-}
+// try {
+//     db.connect();
+//     db.end();
+// } catch (error) {
+//     console.error('Erro ao conectar ao MySQL:', error);
+// }
 
 module.exports = db;
 
