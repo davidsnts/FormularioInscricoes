@@ -1,11 +1,11 @@
 const mysql2 = require('mysql2');
 
 const db = mysql2.createConnection({
-    host: '127.0.0.1',
-    user: 'root',
-    password: 'root',
+    host: 'mysql.davidsantos.kinghost.net',
+    user: 'davidsantos',
+    password: '101522mg',
     port: 3306,
-    database: 'geracaoeleita',
+    database: 'davidsantos',
 });
 
 // try {
