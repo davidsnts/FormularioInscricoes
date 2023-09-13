@@ -1,0 +1,15 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/navbar') %>
+<body>
+    <div class="container mt-5"> 
+        <div class="card">
+            <div class="card-header bg-dark text-light">Link de pagamento</div>
+            <div class="card-body">
+                <p>Foi gerado um link de pagamento, Realize o pagamento clicando no link abaixo:</p>
+                <p>Assim que o seu pagamento for confirmado, enviaremos um e-mail com as demais informações.</p>
+                <a href="<%= linkPagamento %>" class="btn btn-danger float-right">Link de Pagamento</a>
+            </div>
+        </div>
+    </div>
+</body>
+<%- include ('../partials/footer') %>

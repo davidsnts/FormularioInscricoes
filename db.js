@@ -4,7 +4,7 @@ const db = mysql2.createConnection({
     host: '127.0.0.1',
     user: 'root',
     password: 'root',
-    port: 3308,
+    port: 3306,
     database: 'geracaoeleita',
 });
 
