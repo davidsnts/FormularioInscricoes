@@ -33,7 +33,28 @@ router.post('/finalizarPagamento', async (req, res) => {
     res.status(500).json({ error: 'Erro ao finalizar pagamento' });
   }
 });
+router.get('/inscritos', async(req,res) =>{
+  const codInscricao = req.query.cod_inscricao;
+  
+  formularioController.buscarInscritos(codInscricao)
+  .then((inscritos) => {
+    console.log(inscritos);
+    res.render('formularios/inscritos', { inscritos })
+  })
+  .catch((error) => {
+    console.error('Erro ao buscar inscritos:', error);
+  })
+})
 
+router.get('/inscricoes', async(req,res) =>{
+  formularioController.buscarInscricoes()
+  .then((inscricoes) => {    
+    res.render('formularios/inscricoes', { inscricoes })
+  })
+  .catch((error) => {
+    console.error('Erro ao buscar inscritos:', error);
+  })
+})
 
 router.get('/edt-formulario', (req, res) => {
   formularioController.buscarFormularios()

@@ -1,13 +1,13 @@
 <%- include ('../partials/header') %> <%- include ('../partials/navbar') %>
 <body>
-  <form class="row g-3 container mt-1" style="display: flex; flex-direction: column; width: 100%" method="post"action="/atualizarFormulario">
-    <div class="col-6">
+  <form class="row g-3 container m-1" style="display: flex; flex-direction: column; width: 100%" method="post"action="/atualizarFormulario">
+    <div class=" w-100">
       <label for="inputEmail4" class="form-label">Nome do fomulário</label>
-      <input type="text" class="form-control" id="nome-formulario" name="descricao" value="<%= formulario.descricao%>" />
+      <input type="text" class="form-control" s id="nome-formulario" name="descricao" value="<%= formulario.descricao%>" />
       <input type="hidden" name="cod_formulario" value="<%= formulario.cod_formulario %>">
     </div>
-    <div class="col-6">
-      <label for="inputAddress" class="form-label">Valor da inscrição</label>
+    <div class="col-4">
+      <label for="inputAddress" class="form-label">Valor</label>
       <input type="number" class="form-control" id="valor" name="valor" value="<%= formulario.valor %>" />
     </div>
     <div style="display: flex; flex-direction: row">
@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="col-12">
-      <button type="submit" class="btn btn-primary">Alterar</button>
+      <button type="submit" class="btn btn-danger w-100">Alterar</button>
     </div>
   </form>
 </body>

@@ -16,8 +16,47 @@ function abrirCheckout(produto, req, res) {
     });
 }
 
-function buscarFormularios() {
+function buscarInscritos(codInscricao){
+  console.log(codInscricao);
+  if (codInscricao == 0) {
+    
+    return new Promise((resolve, reject) => {
+      db.query(`SELECT * FROM inscrito`, (error, results) => {
+        if (error) {
+          console.error({ error: 'Erro ao consultar o banco de dados.' });
+          reject(error);
+        }
+        resolve(results);
+      });
+    });
+    
+  } else {
+    
+    return new Promise((resolve, reject) => {
+      db.query(`SELECT * FROM inscrito where cod_inscricao = ${codInscricao}`, (error, results) => {
+        if (error) {
+          console.error({ error: 'Erro ao consultar o banco de dados.' });
+          reject(error);
+        }
+        resolve(results);
+      });
+    });
+  }
+}
 
+function buscarInscricoes(){
+  return new Promise((resolve, reject) => {
+    db.query('SELECT * FROM inscricao', (error, results) => {
+      if (error) {
+        console.error({ error: 'Erro ao consultar o banco de dados.' });
+        reject(error);
+      }
+      resolve(results);
+    });
+  });
+}
+
+function buscarFormularios() {
   return new Promise((resolve, reject) => {
     db.connect((err) => {
       if (err) {
@@ -151,4 +190,4 @@ function inserirInscricao(cod_form) {
   });
 }
 
-module.exports = { abrirCheckout, buscarFormularios, atualizarFormulario, criarInscricao };
+module.exports = { abrirCheckout, buscarFormularios, atualizarFormulario, criarInscricao, buscarInscritos, buscarInscricoes };
