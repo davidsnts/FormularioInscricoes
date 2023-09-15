@@ -1,47 +1,39 @@
 <%- include ('../partials/header') %> 
 <%- include ('../partials/navbar') %>
-
     <body>
       <div class="container mt-2">
-        <div class="card">
-          <div class="card-header" style="
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-        ">
-            <h5 class="mb-2">
-              <%= formulario.descricao %>
-            </h5>
-            <h5>
-              Inscrições de <%= formulario.data_inicio %> até <%= formulario.data_fim %>
-            </h5>
+        <div class="card" style="border-radius: 10px;">
+          <div class="card-header bg-info text-light" style="display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+            <h6 class="mb-2" >  <%= formulario.descricao %>  </h6>
+            <h7> Inscrições de <%= formulario.data_inicio %> até <%= formulario.data_fim %> </h7>
           </div>
           <div class="card-body" style="display: flex; flex-direction: column">
             <div>
               <div class="form-group">
+                <span class="">Nome</span>
                 <input type="text" class="form-control" id="nome" placeholder="Digite seu nome" required />
               </div>
               <div class="form-group">
+                <span class="">E-mail</span>
                 <input type="email" class="form-control" id="email" placeholder="Digite seu e-mail" required />
               </div>
               <div class="form-group">
+                <span class="">Telefone</span>
                 <input type="tel" class="form-control" id="telefone" placeholder="Digite seu telefone" required />
               </div>
               <div class="form-group">
-                <span class="">Data de nascimento</span>
-                <input type="date" class="form-control" id="dataNascimento" placeholder="Data de nascimento"
-                  onchange="verificarIdadade()" required />
+                <span class="">Nascido em</span>
+                <!-- <input type="date" class="form-control" id="dataNascimento" placeholder="Data de nascimento" onchange="verificarIdadade()" required /> -->
+                <input type="text" class="form-control" maxlength="10" id="dataNascimento" placeholder="exemplo: 18/06/1996" onchange="verificarIdadade()" required />
               </div>
               <div class="form-group">
-                <input type="tel" class="form-control" id="telefoneResponsavel" name="telRespondavel"
-                  placeholder="Telefone do responsável" style="display: none" />
+                <input type="tel" class="form-control" id="telefoneResponsavel" name="telRespondavel" placeholder="Telefone do responsável" style="display: none" />
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" id="nomeResponsavel" name="nomeRespondavel"
-                  placeholder="Nome do responsável" style="display: none" />
+                <input type="text" class="form-control" id="nomeResponsavel" name="nomeRespondavel" placeholder="Nome do responsável" style="display: none" />
               </div>
               <div class="form-group">
-                <span>Endereço: </span>
+                <span> Endereço: </span>
                 <input type="text" class="form-control mb-2" id="rua" placeholder="Rua" required />
                 <input type="number" class="form-control mb-2" id="numero" placeholder="Número" required />
                 <input type="text" class="form-control mb-2" id="bairro" placeholder="Bairro" required />
@@ -126,25 +118,39 @@
         inscritos.push(inscrito);
       }
 
-      function verificarIdadade(dataNasc) {
-        const dataNascimento = document.getElementById("dataNascimento").value;
-        const dataNascimentoObj = new Date(dataNascimento);
-        const dataAtual = new Date();
-        const idade = dataAtual.getFullYear() - dataNascimentoObj.getFullYear();
-        const telResponsavel = document.getElementById('telefoneResponsavel');
-        const nomeResponsavel = document.getElementById('nomeResponsavel');
+      function verificarIdadade() {
+        
+          const dataNascimento = document.getElementById("dataNascimento").value;
+          const partesDaData = dataNascimento.split('/');
 
-        if (idade >= 18) {
-          telResponsavel.style.display = 'none';
-          nomeResponsavel.style.display = 'none';
-          nomeResponsavel.removeAttribute('required');
-          telResponsavel.removeAttribute('required');
-        } else {
-          telResponsavel.style.display = 'Block';
-          nomeResponsavel.style.display = 'Block';
-          nomeResponsavel.setAttribute('required', 'true');
-          telResponsavel.setAttribute('required', 'true');
-        }
+          const dia = parseInt(partesDaData[0], 10);
+          const mes = parseInt(partesDaData[1], 10) - 1;
+          const ano = parseInt(partesDaData[2], 10);       
+
+          const dataNascimentoObj = new Date(ano, mes, dia);         
+
+          if(dataNascimentoObj.toString() === 'Invalid Date'){
+            alert('A data de nascimento deve ser no formato DD/MM/AAAA (ex. 18/06/1996)');
+            document.getElementById("dataNascimento").value = "";
+            document.getElementById("dataNascimento").focus();
+          }else{
+            const dataAtual = new Date();
+            const idade = dataAtual.getFullYear() - dataNascimentoObj.getFullYear();
+            const telResponsavel = document.getElementById('telefoneResponsavel');
+            const nomeResponsavel = document.getElementById('nomeResponsavel');
+
+            if (idade >= 18) {
+              telResponsavel.style.display = 'none';
+              nomeResponsavel.style.display = 'none';
+              nomeResponsavel.removeAttribute('required');
+              telResponsavel.removeAttribute('required');
+            } else {
+              telResponsavel.style.display = 'Block';
+              nomeResponsavel.style.display = 'Block';
+              nomeResponsavel.setAttribute('required', 'true');
+              telResponsavel.setAttribute('required', 'true');
+            }
+          }       
       }
       function verificarCamposPreenchidos() {
         const campos = [
