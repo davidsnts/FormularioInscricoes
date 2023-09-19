@@ -43,8 +43,31 @@ function buscarInscritos(codInscricao){
     });
   }
 }
+function buscarInscricoes() {
+  mercadopago.buscarPagamentosAprovados()
+    .then(async function (pagamentos) {
+      for (const pagamento of pagamentos) {
+        if (pagamento.inscricao !== null && pagamento.inscricao.includes("#")) {
+          const partes = pagamento.inscricao.split('#');
+          if (partes.length > 1) {
+            const valorAposHashtag = partes[1];
+            
+            const inscricao = await buscarInscricaoPorCodigo(valorAposHashtag);
+                    
+            if (inscricao && inscricao.status !== 'approved') {              
+              await atualizarStatusInscricao(inscricao.cod_inscricao, 'approved');
+              console.log(`Status da inscrição #${inscricao.cod_inscricao} atualizado para "approved".`);
+            }
+          } else {
+            console.log('A string não contém uma hashtag (#).');
+          }
+        }
+      }
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
 
-function buscarInscricoes(){
   return new Promise((resolve, reject) => {
     db.query('SELECT * FROM inscricao', (error, results) => {
       if (error) {
@@ -52,6 +75,33 @@ function buscarInscricoes(){
         reject(error);
       }
       resolve(results);
+    });
+  });
+}
+
+// Função para buscar uma inscrição pelo código
+async function buscarInscricaoPorCodigo(codigo) {
+  return new Promise((resolve, reject) => {
+    db.query(`SELECT * FROM inscricao WHERE cod_inscricao = ?`, [codigo], (error, results) => {
+      if (error) {
+        console.error('Erro ao buscar inscrição:', error);
+        reject(error);
+      } else {
+        resolve(results[0]);
+      }
+    });
+  });
+}
+
+async function atualizarStatusInscricao(id, novoStatus) {
+  return new Promise((resolve, reject) => {
+    db.query('UPDATE inscricao SET situacao_pagamento = ? WHERE cod_inscricao = ?', [novoStatus, id], (error, results) => {
+      if (error) {
+        console.error('Erro ao atualizar status da inscrição:', error);
+        reject(error);
+      } else {
+        resolve();
+      }
     });
   });
 }
@@ -130,10 +180,10 @@ async function criarInscricao(req, res) {
     unit_price: inscritos[0].formulario.valor,
     title: inscritos[0].formulario.descricao
   }
-  
 
   try {
     const cod_inscricao = await inserirInscricao(cod_form);
+    produto.title = produto.title + ' #' + cod_inscricao;
 
       for (const inscrito of inscritos) {
         db.query(

@@ -1,0 +1,116 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/navbar') %>
+
+<body>
+    <button onclick="exportInscricoesToExcel()" class="btn btn-primary">Exportar para Excel</button>
+    <div class="container mt-5">
+      <h2>Tabela de Inscrições</h2>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Inscrição</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Data de Nascimento</th>
+            <th>Telefone do Responsável</th>
+            <th>Nome do Responsável</th>
+            <th>Bairro da Congregação</th>
+            <th>Telefone de Emergência</th>
+            <th>Rua</th>
+            <th>Número</th>
+            <th>Bairro</th>
+            <th>Cidade</th>
+            <th>Estado</th>
+            <th>Líder</th>
+            <th>Situação de Pagamento</th>
+            <th>Link de Pagamento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% inscricoes.forEach(function(inscricao) { %>
+            <tr>
+              <td><%= inscricao.inscricao %></td>
+              <td><%= inscricao.nome %></td>
+              <td><%= inscricao.email %></td>
+              <td><%= inscricao.telefone %></td>
+              <td><%= inscricao.dataNascimento.toISOString().slice(0, 10) %></td>
+              <td><%= inscricao.telefoneResponsavel %></td>
+              <td><%= inscricao.nomeResponsavel %></td>
+              <td><%= inscricao.bairroCongregacao %></td>
+              <td><%= inscricao.telefoneEmergencia %></td>
+              <td><%= inscricao.rua %></td>
+              <td><%= inscricao.numero %></td>
+              <td><%= inscricao.bairro %></td>
+              <td><%= inscricao.cidade %></td>
+              <td><%= inscricao.estado %></td>
+              <td><%= inscricao.lider %></td>
+              <td><%= inscricao.situacao_pagamento %></td>
+              <td><%= inscricao.link_pagamento %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+</body>
+  <!-- Inclua a biblioteca xlsx diretamente do CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+
+<script>
+
+function exportInscricoesToExcel() {
+  const inscricoes = <%- JSON.stringify(inscricoes) %>;
+
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Inscrições');
+
+  // Adicione todas as colunas
+  worksheet.columns = [
+    { header: 'Inscrição', key: 'inscricao' },
+    { header: 'Nome', key: 'nome' },
+    { header: 'Email', key: 'email' },
+    { header: 'Telefone', key: 'telefone' },
+    { header: 'Data de Nascimento', key: 'dataNascimento' },
+    { header: 'Telefone do Responsável', key: 'telefoneResponsavel' },
+    { header: 'Nome do Responsável', key: 'nomeResponsavel' },
+    { header: 'Bairro da Congregação', key: 'bairroCongregacao' },
+    { header: 'Telefone de Emergência', key: 'telefoneEmergencia' },
+    { header: 'Rua', key: 'rua' },
+    { header: 'Número', key: 'numero' },
+    { header: 'Bairro', key: 'bairro' },
+    { header: 'Cidade', key: 'cidade' },
+    { header: 'Estado', key: 'estado' },
+    { header: 'Líder', key: 'lider' },
+    { header: 'Situação de Pagamento', key: 'situacao_pagamento' },
+    { header: 'Link de Pagamento', key: 'link_pagamento' },
+    { header: 'Genero', key: 'genero' },
+  ];
+
+  inscricoes.forEach((inscricao) => {
+    worksheet.addRow(inscricao);
+  });
+
+  // Cria o arquivo Excel em formato base64
+  workbook.xlsx.writeBuffer().then((data) => {
+    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'inscricoes.xlsx';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+
+    URL.revokeObjectURL(url);
+  });
+}
+
+
+</script>
+
+  
+
+
+<%- include ('../partials/footer') %>
