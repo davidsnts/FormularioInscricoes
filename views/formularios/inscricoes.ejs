@@ -2,32 +2,36 @@
     <%- include ('../partials/navbar') %>
 
         <body>
-            <div class="container m-0 mt-5">
-                <h2>Tabela de Inscrições</h2>
-                <table class="table table-bordered" style="table-layout: auto;">
+            <div class="m-2" style="overflow: scroll; height: 90vh;">
+                <h2>Inscrições</h2>
+                <table class="table table-bordered">
                     <thead class="table-dark">
                         <tr>
-                            <th> #Inscrição   </th>   
-                            <th>Situação do pagamento </th>    
-                            <th>Detalhes</th>                     
+                            <th> #Inscrição </th>
+                            <th>Situação do pagamento </th>
+                            <th>Detalhes</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% inscricoes.forEach((inscricao)=> { %>
                             <tr>
                                 <td class="m-0">
-                                    <%= inscricao.cod_inscricao %>                                    
+                                    <%= inscricao.cod_inscricao %>
                                 </td>
                                 <td class="">
                                     <%= inscricao.situacao_pagamento %>
                                 </td>
                                 <td>
-                                    <a  href="/inscritos?cod_inscricao= <%= inscricao.cod_inscricao %>" style="font-size: 2rem; display: flex; align-items: center; justify-content: center;" ><i class=" bi bi-folder2-open bg-warning text-dark p-2 m-0 p-0" style="border-radius: 5px; " ></i></a>
+                                    <a href="/inscritos?cod_inscricao= <%= inscricao.cod_inscricao %>"
+                                        style="font-size: 2rem; display: flex; align-items: center; justify-content: center;"><i
+                                            class=" bi bi-folder2-open bg-warning text-dark p-2 m-0 p-0"
+                                            style="border-radius: 5px; "></i></a>
                                 </td>
                             </tr>
-                        <% }); %>
+                            <% }); %>
                     </tbody>
                 </table>
+
             </div>
         </body>
         <%- include ('../partials/footer') %>

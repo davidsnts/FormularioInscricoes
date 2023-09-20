@@ -7,7 +7,14 @@ const relatoriosController = require('../controllers/relatorioController');
 
 router.get('/inscricoes_aprovadas', (req, res) => {
     relatoriosController.buscarInscricoesAprovadas()
-        .then((inscricoes) => {
+        .then((inscricoes) => {      
+            for (const inscricao of inscricoes) {
+                if(inscricao.situacao_pagamento === 'approved'){
+                    inscricao.situacao_pagamento = 'Pagamento aprovado'
+                }
+            }      
+            
+            console.log(inscricoes);
             res.render('relatorios/inscricoes-aprovadas', { inscricoes });
         })
         .catch((error) => {

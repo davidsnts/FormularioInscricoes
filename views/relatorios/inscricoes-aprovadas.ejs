@@ -1,13 +1,35 @@
 <%- include ('../partials/header') %>
 <%- include ('../partials/navbar') %>
 
-<body>
-    <button onclick="exportInscricoesToExcel()" class="btn btn-primary">Exportar para Excel</button>
-    <div class="container mt-5">
-      <h2>Tabela de Inscrições</h2>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
+<style>
+  .scrollable-table {
+    overflow: auto;
+    height: 70vh;
+    width: 100%;
+  }
+
+  .scrollable-table table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .scrollable-table th, .scrollable-table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 8px;
+  }
+</style>
+
+<body>    
+    <div style="display: flex; justify-content: space-between; margin: 10px; align-items: center;">
+      <h4>Tabela de Inscrições</h4>
+      <button onclick="exportInscricoesToExcel()" class="btn btn-danger m-1 float-right">Exportar para Excel</button>
+    </div>
+    <div class="m-2 scrollable-table">
+      <table class="table table-bordered table-responsive">
+        <thead class="thead-dark">
+          <tr >
             <th>Inscrição</th>
             <th>Nome</th>
             <th>Email</th>
@@ -50,9 +72,12 @@
             </tr>
           <% }); %>
         </tbody>
-      </table>
+      </table>      
     </div>
+    
 </body>
+
+
   <!-- Inclua a biblioteca xlsx diretamente do CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
