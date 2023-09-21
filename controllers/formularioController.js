@@ -3,11 +3,9 @@ const express = require("express");
 const router = express.Router();
 const db = require('../db');
 
-function abrirCheckout(produto, req, res) {
-  console.log(produto);
+function abrirCheckout(produto, req, res) {  
   return mercadopago.obterLinkPagamento(produto.title, produto.unit_price, produto.quantity)
-    .then(linkPagamento => {
-      console.log('Link de pagamento:', linkPagamento);
+    .then(linkPagamento => {      
       return linkPagamento; // Retorna o link de pagamento
     })
     .catch(error => {
@@ -17,8 +15,7 @@ function abrirCheckout(produto, req, res) {
 }
 
 function buscarInscritos(codInscricao){
-  console.log(codInscricao);
-  if (codInscricao == 0) {
+    if (codInscricao == 0) {
     
     return new Promise((resolve, reject) => {
       db.query(`SELECT * FROM inscrito`, (error, results) => {
@@ -55,8 +52,7 @@ function buscarInscricoes() {
             const inscricao = await buscarInscricaoPorCodigo(valorAposHashtag);
                     
             if (inscricao && inscricao.status !== 'approved') {              
-              await atualizarStatusInscricao(inscricao.cod_inscricao, 'approved');
-              console.log(`Status da inscrição #${inscricao.cod_inscricao} atualizado para "approved".`);
+              await atualizarStatusInscricao(inscricao.cod_inscricao, 'approved');              
             }
           } else {
             console.log('A string não contém uma hashtag (#).');
@@ -216,8 +212,7 @@ async function criarInscricao(req, res) {
         );
       }
  
-  const linkRecebido = await abrirCheckout(produto, req, res);
-    return linkRecebido; 
+  
   } catch (error) {
     console.error('Erro ao criar inscrição:', error);
     throw error; // Lança o erro para que ele seja tratado posteriormente

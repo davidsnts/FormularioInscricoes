@@ -2,6 +2,19 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const formularioController = require('./controllers/formularioController');
+
+function integrarPagamentosMP(){
+    formularioController.buscarInscricoes()
+  .then((inscricoes) => {    
+    console.log('Pagamentos integrados com sucesso');
+  })
+  .catch((error) => {
+    console.error('Erro !!! ao integrar os pagamentos!', error);
+  })
+}
+
+setInterval(integrarPagamentosMP, 60000);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
