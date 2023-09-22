@@ -15,7 +15,7 @@ async function buscarUsuarioSenha(req, res) {
       if (error) {
         reject(error);
       } else if (results.length === 0) {
-        reject('Credenciais inválidas.');
+        resolve('credênciais inválidas');
       } else {
         resolve(results);
       }

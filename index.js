@@ -46,10 +46,14 @@ app.get('/login', (req, res) => {
 
 app.post('/login', async (req, res) => {
     try {
-        const usr = await loginController.buscarUsuarioSenha(req,res);           
-        req.session.loggedIn = true;
-        req.session.username = usr[0].login;        
-        res.redirect("/");
+        if (await loginController.buscarUsuarioSenha(req,res) === 'credênciais inválidas') {
+          res.redirect("/?login=invalido");           
+        } else {
+          const usr = await loginController.buscarUsuarioSenha(req,res); 
+          req.session.loggedIn = true;
+          req.session.username = usr[0].login;        
+          res.redirect("/");   
+        }               
       } catch (error) {
         console.error(error);
       }

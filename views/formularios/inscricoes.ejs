@@ -4,7 +4,7 @@
         <body>
             <div class="m-2" style="overflow: scroll; height: 90vh;">
                 <h2>Inscrições</h2>
-                <table class="table table-bordered">
+                <table class="table table-bordered table-responsive">
                     <thead class="table-dark">
                         <tr>
                             <th> #Inscrição </th>
@@ -22,10 +22,7 @@
                                     <%= inscricao.situacao_pagamento %>
                                 </td>
                                 <td>
-                                    <a href="/inscritos?cod_inscricao= <%= inscricao.cod_inscricao %>"
-                                        style="font-size: 2rem; display: flex; align-items: center; justify-content: center;"><i
-                                            class=" bi bi-folder2-open bg-warning text-dark p-2 m-0 p-0"
-                                            style="border-radius: 5px; "></i></a>
+                                    <a href="/inscritos?cod_inscricao= <%= inscricao.cod_inscricao %>" style="font-size: 2rem; display: flex; align-items: center; justify-content: center; "><i class=" bi bi-folder2-open bg-warning text-dark p-0 m-0 p-0" style="border-radius: 5px; background: none; height: min-content;"></i></a>
                                 </td>
                             </tr>
                             <% }); %>
