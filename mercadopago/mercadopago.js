@@ -53,7 +53,7 @@ function obterLinkPagamento(title, preco, quantity) {
 
     mercadopago.preferences.create(preference)
       .then(response => {
-        resolve(response.body.init_point);
+        resolve(response.body);
       })
       .catch(error => {
         reject(error);

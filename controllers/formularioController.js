@@ -5,7 +5,7 @@ const db = require('../db');
 
 function abrirCheckout(produto, req, res) {  
   return mercadopago.obterLinkPagamento(produto.title, produto.unit_price, produto.quantity)
-    .then(linkPagamento => {      
+    .then(linkPagamento => {            
       return linkPagamento; // Retorna o link de pagamento
     })
     .catch(error => {
@@ -179,7 +179,13 @@ async function criarInscricao(req, res) {
 
   try {
     const cod_inscricao = await inserirInscricao(cod_form);
+    
     produto.title = produto.title + ' #' + cod_inscricao;
+
+    
+
+    
+    
 
       for (const inscrito of inscritos) {
         db.query(
@@ -206,12 +212,34 @@ async function criarInscricao(req, res) {
               console.error('Erro ao inserir inscrito:', error);
               return;
             }
-            console.log('Inscrito inserido com sucesso:', results.insertId);
+            // console.log('Inscrito inserido com sucesso:', results.insertId);
             
           }
         );
       }
- 
+     
+      try {
+        const linkPagamento = await abrirCheckout(produto, req, res);
+        
+        // console.log(linkPagamento);
+        
+        db.query(
+          'UPDATE inscricao SET link_pagamento = ? WHERE cod_inscricao = ?',
+          [linkPagamento.init_point, cod_inscricao],
+          (error, results, fields) => {
+            if (error) {
+              console.error('Erro ao executar a atualização:', error);
+              return;
+            }            
+          }
+        );
+
+        return linkPagamento.init_point;
+      } catch (error) {
+        console.error('Erro ao obter link de pagamento:', error);
+      }
+
+      
   
   } catch (error) {
     console.error('Erro ao criar inscrição:', error);
