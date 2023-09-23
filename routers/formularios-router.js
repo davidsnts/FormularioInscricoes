@@ -49,12 +49,13 @@ router.get('/inscritos', async(req,res) =>{
 router.get('/inscricoes', async(req,res) =>{
   formularioController.buscarInscricoes()
   .then((inscricoes) => {    
+    console.log(inscricoes);
     res.render('formularios/inscricoes', { inscricoes })
   })
   .catch((error) => {
     console.error('Erro ao buscar inscritos:', error);
   })
-})
+});
 
 router.get('/edt-formulario', (req, res) => {
   formularioController.buscarFormularios()
@@ -77,7 +78,6 @@ function formatarDataParaInputDate(dataString) {
     const dataFormatada = `${ano}-${mes}-${dia}`;
     return dataFormatada;
   }
-  // Se o formato não for válido, retorne a data original
   return dataString;
 }
 

@@ -1,5 +1,5 @@
 <%- include ('../partials/header') %>
-  <%- include ('../partials/navbar') %>
+<%- include ('../partials/navbar') %>
 
     <body>
       <div class="container mt-2">
@@ -92,13 +92,14 @@
 
 
     <script>
-      let inscrito = {};
+      
       let inscritos = [];
-      const formulario = <%- JSON.stringify(formulario) %>;
-      inscrito.formulario = formulario;
+      const formulario = <%- JSON.stringify(formulario) %>;      
 
       function criarInscrito(criarNovamente) {
         if (verificarCamposPreenchidos()) {
+          let inscrito = {};
+          inscrito.formulario = formulario;
           inscrito.nome = document.getElementById('nome').value;
           inscrito.email = document.getElementById('email').value;
           inscrito.telefone = document.getElementById('telefone').value;
@@ -137,11 +138,7 @@
         document.getElementById('bairro-congregacao').value = "";
         document.getElementById('telefoneResponsavel').value = "";
         document.getElementById('nomeResponsavel').value = "";
-      }
-
-      function adicionarInscrito(inscrito) {
-        inscritos.push(inscrito);
-      }
+      }     
 
       function verificarIdade() {
 
@@ -205,7 +202,6 @@
         return true;
       }
 
-
       function salvar() {
         if (verificarCamposPreenchidos()) {
           const url = '/finalizarPagamento';
@@ -247,8 +243,6 @@
         }
       }
     </script>
-
-    <!-- //validações -->
     <script>
       const emailInput = document.getElementById('email');
       emailInput.addEventListener('change', function () {

@@ -3,32 +3,83 @@
 
         <body>
             <div class="m-2" style="overflow: scroll; height: 90vh;">
-                <h2>Inscrições</h2>
-                <table class="table table-bordered table-responsive">
+                <div style="display: flex; gap: 50px;">
+                    <h2>Inscrições</h2>
+
+                    <div style="display: flex; gap: 10px;">
+                        <div class="form-group">
+                            <small id="helpId" class="form-text text-muted">Pesquisar por nome</small>
+                            <input type="text" class="form-control" id="inputPesquisa" name="" aria-describedby="helpId"
+                                placeholder="Pesquisar por nome">
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-responsive" style="width: fit-content;">
                     <thead class="table-dark">
                         <tr>
-                            <th> #Inscrição </th>
-                            <th>Situação do pagamento </th>
+                            <th>#Inscrição</th>
+                            <th>Situação do pagamento</th>
+                            <th>Nomes</th>
+                            <th>Link pagamento</th>
                             <th>Detalhes</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        <% inscricoes.forEach((inscricao)=> { %>
+                        <% Object.keys(inscricoes).forEach((codInscricao)=> { %>
                             <tr>
                                 <td class="m-0">
-                                    <%= inscricao.cod_inscricao %>
+                                    <%= codInscricao %>
                                 </td>
                                 <td class="">
-                                    <%= inscricao.situacao_pagamento %>
+                                    <%= inscricoes[codInscricao][0].situacao_pagamento %>
                                 </td>
                                 <td>
-                                    <a href="/inscritos?cod_inscricao= <%= inscricao.cod_inscricao %>" style="font-size: 2rem; display: flex; align-items: center; justify-content: center; "><i class=" bi bi-folder2-open text-warning p-0 m-0 p-0" style="border-radius: 5px; background: none; height: min-content;"></i></a>
+                                    <ul>
+                                        <% inscricoes[codInscricao].forEach((inscricao)=> { %>
+                                            <li>
+                                                <%= inscricao.nome %>
+                                            </li>
+                                            <% }); %>
+                                    </ul>
+                                </td>
+                                <td> <%= inscricoes[codInscricao][0].link_pagamento %></td>
+                                <td>
+                                    <a href="/inscritos?cod_inscricao=<%= codInscricao %>"
+                                        style="font-size: 2rem; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-folder2-open text-warning p-0 m-0 p-0"
+                                            style="border-radius: 5px; background: none; height: min-content;"></i>
+                                    </a>
                                 </td>
                             </tr>
                             <% }); %>
                     </tbody>
                 </table>
-
             </div>
+
+            <script>
+                // Campo de pesquisa
+                const inputPesquisa = document.getElementById('inputPesquisa');
+
+                // Evento de escuta para a entrada de texto
+                inputPesquisa.addEventListener('input', () => {
+                    const termoPesquisa = inputPesquisa.value.toLowerCase();
+
+                    // Percorra as linhas da tabela e oculte aquelas que não correspondem ao termo de pesquisa
+                    const linhasTabela = document.querySelectorAll('tbody tr');
+                    linhasTabela.forEach((linha) => {
+                        const nomes = linha.querySelectorAll('li');
+                        let corresponde = false;
+                        nomes.forEach((nome) => {
+                            if (nome.textContent.toLowerCase().includes(termoPesquisa)) {
+                                corresponde = true;
+                            }
+                        });
+                        linha.style.display = corresponde ? '' : 'none';
+                    });
+                });
+            </script>
         </body>
+
         <%- include ('../partials/footer') %>

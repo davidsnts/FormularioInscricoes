@@ -65,17 +65,33 @@ function buscarInscricoes() {
     });
 
   return new Promise((resolve, reject) => {
-    db.query('SELECT * FROM inscricao', (error, results) => {
+    db.query('SELECT ic.cod_inscricao, situacao_pagamento, i.nome, link_pagamento FROM inscricao ic left join inscrito i on i.cod_inscricao = ic.cod_inscricao;', (error, results) => {
       if (error) {
         console.error({ error: 'Erro ao consultar o banco de dados.' });
         reject(error);
       }
-      resolve(results);
+      const inscricoes = {};
+      
+
+      for (const inscricao of results) {
+        const codInscricao = inscricao.cod_inscricao;      
+        
+        if (!inscricoes[codInscricao]) {
+          inscricoes[codInscricao] = [];
+        }     
+        
+        inscricoes[codInscricao].push({
+          situacao_pagamento: inscricao.situacao_pagamento,
+          link_pagamento: inscricao.link_pagamento,
+          nome: inscricao.nome
+        });
+      }
+
+      resolve(inscricoes);
     });
   });
 }
 
-// Função para buscar uma inscrição pelo código
 async function buscarInscricaoPorCodigo(codigo) {
   return new Promise((resolve, reject) => {
     db.query(`SELECT * FROM inscricao WHERE cod_inscricao = ?`, [codigo], (error, results) => {
@@ -251,7 +267,7 @@ function inserirInscricao(cod_form) {
   return new Promise((resolve, reject) => {
     db.query(
       'INSERT INTO inscricao (`situacao_pagamento`, `cod_formulario`) VALUES (?, ?)',
-      ['Pagamento em processamento', cod_form],
+      ['Pagamento pendente', cod_form],
       function (err, results, fields) {
         if (err) {
           reject(err);
