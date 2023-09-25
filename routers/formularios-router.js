@@ -48,8 +48,13 @@ router.get('/inscritos', async(req,res) =>{
 
 router.get('/inscricoes', async(req,res) =>{
   formularioController.buscarInscricoes()
-  .then((inscricoes) => {    
-    console.log(inscricoes);
+  .then((inscricoes) => {   
+    Object.keys(inscricoes).forEach((codInscricao)=> {
+      if (inscricoes[codInscricao][0].situacao_pagamento === 'approved') {
+        inscricoes[codInscricao][0].situacao_pagamento = 'Pagamento Aprovado'
+      }
+    })
+    
     res.render('formularios/inscricoes', { inscricoes })
   })
   .catch((error) => {
