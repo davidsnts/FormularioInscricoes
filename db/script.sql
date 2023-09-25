@@ -1,5 +1,5 @@
-use geracaoeleita;
-/*geracaoeleita database*/
+USE geracaoeleita;
+
 CREATE TABLE formulario (
     cod_formulario INT AUTO_INCREMENT PRIMARY KEY,
     descricao VARCHAR(255),
@@ -12,7 +12,9 @@ CREATE TABLE inscricao (
     cod_inscricao INT AUTO_INCREMENT PRIMARY KEY,
     situacao_pagamento VARCHAR(50),
     cod_formulario INT,
-    FOREIGN KEY (cod_formulario) REFERENCES Formulario(cod_formulario)
+    link_pagamento VARCHAR(255),
+    id_transacao VARCHAR(255),
+    FOREIGN KEY (cod_formulario) REFERENCES formulario(cod_formulario)
 );
 
 CREATE TABLE inscrito (
@@ -31,6 +33,14 @@ CREATE TABLE inscrito (
     bairro VARCHAR(255),
     cidade VARCHAR(255),
     estado VARCHAR(2),
-    lider varchar(100),
-    FOREIGN KEY (cod_inscricao) REFERENCES Inscricao(cod_inscricao)
+    lider VARCHAR(100),
+    genero CHAR(1),
+    FOREIGN KEY (cod_inscricao) REFERENCES inscricao(cod_inscricao)
 );
+
+CREATE TABLE `usuario` (
+  `login` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `senha` varchar(100) DEFAULT NULL,
+  `nome` varchar(100) DEFAULT NULL
+) 

@@ -1,38 +1,37 @@
 <%- include ('../partials/header') %>
     <%- include ('../partials/navbar') %>
 
-        <body>
+ 
             <div class="m-2" style="overflow: scroll; height: 90vh;">
-                <div style="display: flex; gap: 50px;">
+                <div style="display: flex; gap: 50px; flex-direction: row; justify-content: space-between; align-items: center">
                     <h2>Inscrições</h2>
 
                     <div style="display: flex; gap: 10px;">
-                        <div class="form-group">
+                        <div class="form-group" >
                             <small id="helpId" class="form-text text-muted">Pesquisar por nome</small>
-                            <input type="text" class="form-control" id="inputPesquisa" name="" aria-describedby="helpId"
-                                placeholder="Pesquisar por nome">
+                            <input type="text" class="form-control" id="inputPesquisa" name="" aria-describedby="helpId" placeholder="Pesquisar por nome">
                         </div>
                     </div>
                 </div>
 
-                <table class="table table-bordered table-responsive" style="width: fit-content;">
+                <table class="table table-responsive w-100" style="width: fit-content; height:fit-content;">
                     <thead class="table-dark">
                         <tr>
-                            <th>#Inscrição</th>
-                            <th>Situação do pagamento</th>
-                            <th>Nomes</th>
-                            <th>Link pagamento</th>
-                            <th>Detalhes</th>
+                            <th style="text-align: center; vertical-align: middle;">#Inscrição</th>
+                            <th style="text-align: center; vertical-align: middle;">Situação do pagamento</th>
+                            <th style="text-align: center; vertical-align: middle;">Nomes</th>
+                            <th style="text-align: center; vertical-align: middle;">Link pagamento</th>
+                            <th style="text-align: center; vertical-align: middle;">Detalhes</th>
 
                         </tr>
                     </thead>
                     <tbody>
                         <% Object.keys(inscricoes).forEach((codInscricao)=> { %>
                             <tr>
-                                <td class="m-0">
+                                <td style="vertical-align: middle;">
                                     <%= codInscricao %>
                                 </td>
-                                <td class="">
+                                <td style="text-align: center; vertical-align: middle;">
                                     <%= inscricoes[codInscricao][0].situacao_pagamento %>
                                 </td>
                                 <td>
@@ -44,8 +43,8 @@
                                             <% }); %>
                                     </ul>
                                 </td>
-                                <td> <%= inscricoes[codInscricao][0].link_pagamento %></td>
-                                <td>
+                                <td style="text-align: center; vertical-align: middle;"> <%= inscricoes[codInscricao][0].link_pagamento %></td>
+                                <td style="text-align: center; vertical-align: middle;">
                                     <a href="/inscritos?cod_inscricao=<%= codInscricao %>"
                                         style="font-size: 2rem; display: flex; align-items: center; justify-content: center;">
                                         <i class="bi bi-folder2-open text-warning p-0 m-0 p-0"
@@ -80,6 +79,6 @@
                     });
                 });
             </script>
-        </body>
+      
 
         <%- include ('../partials/footer') %>

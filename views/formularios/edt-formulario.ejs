@@ -1,26 +1,26 @@
 <%- include ('../partials/header') %> <%- include ('../partials/navbar') %>
 <body>
-  <form class="row g-3 container m-1" style="display: flex; flex-direction: column; width: 100%" method="post"action="/atualizarFormulario">
-    <div class=" w-100">
+  <form class="row g-3 container m-1 form-group w-100" style="display: flex; flex-direction: column;" method="post"action="/atualizarFormulario">
+    <div class="w-100 p-1">
       <label for="inputEmail4" class="form-label">Nome do fomulário</label>
       <input type="text" class="form-control" s id="nome-formulario" name="descricao" value="<%= formulario.descricao%>" />
       <input type="hidden" name="cod_formulario" value="<%= formulario.cod_formulario %>">
     </div>
-    <div class="col-4">
+    <div class="col-4 p-1">
       <label for="inputAddress" class="form-label">Valor</label>
       <input type="number" class="form-control" id="valor" name="valor" value="<%= formulario.valor %>" />
     </div>
-    <div style="display: flex; flex-direction: row">
-      <div class="p-1">
+    <div style="display: flex; flex-direction: column" class="p-1">
+      <div class="">
         <label for="inputAddress2" class="form-label p-0">Data inicial da inscrição</label>
         <input type="date" class="form-control" id="data-inicial" name="data_inicio" value="<%= formulario.data_inicio%>"/>
       </div>
-      <div class="p-1">
+      <div class="">
         <label for="inputCity" class="form-label">Data Final da inscrição</label>
         <input type="date" class="form-control" id="data-final" name="data_fim" value="<%= formulario.data_fim%>"/>
       </div>
     </div>
-    <div class="col-12">
+    <div class="col-12 p-1">
       <button type="submit" class="btn btn-danger w-100">Alterar</button>
     </div>
   </form>

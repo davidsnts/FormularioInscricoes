@@ -4,8 +4,9 @@ const bodyParser = require('body-parser');
 const mysql2 = require('mysql2');
 const db = require('../db');
 const relatoriosController = require('../controllers/relatorioController');
+const loginController = require('../controllers/loginController');
 
-router.get('/inscricoes_aprovadas', (req, res) => {
+router.get('/inscricoes_aprovadas', loginController.verificarAutenticacao,(req, res) => {
     relatoriosController.buscarInscricoesAprovadas()
         .then((inscricoes) => {      
             for (const inscricao of inscricoes) {
@@ -14,7 +15,7 @@ router.get('/inscricoes_aprovadas', (req, res) => {
                 }
             }      
             
-            console.log(inscricoes);
+            // console.log(inscricoes);
             res.render('relatorios/inscricoes-aprovadas', { inscricoes });
         })
         .catch((error) => {

@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 const mysql2 = require('mysql2');
 const db = require('../db');
 const formularioController = require('../controllers/formularioController');
+const loginController = require('../controllers/loginController');
+
+
 
 router.get('/inscrever', (req, res) => {
   formularioController.buscarFormularios()
@@ -33,12 +36,19 @@ router.post('/finalizarPagamento', async (req, res) => {
     res.status(500).json({ error: 'Erro ao finalizar pagamento' });
   }
 });
-router.get('/inscritos', async(req,res) =>{
+router.get('/inscritos',loginController.verificarAutenticacao, async(req,res) =>{
   const codInscricao = req.query.cod_inscricao;
   
   formularioController.buscarInscritos(codInscricao)
   .then((inscritos) => {
-    console.log(inscritos);
+    for (const inscrito of inscritos) {      
+        const data_nasc = new Date(inscrito.dataNascimento);
+        const dia_inicio = data_nasc.getDate();
+        const mes_inicio = data_nasc.getMonth() + 1;
+        const ano_inicio = data_nasc.getFullYear();
+        inscrito.dataNascimento = `${dia_inicio.toString().padStart(2, '0')}/${mes_inicio.toString().padStart(2, '0')}/${ano_inicio}`;
+        
+    }
     res.render('formularios/inscritos', { inscritos })
   })
   .catch((error) => {
@@ -46,7 +56,7 @@ router.get('/inscritos', async(req,res) =>{
   })
 })
 
-router.get('/inscricoes', async(req,res) =>{
+router.get('/inscricoes',loginController.verificarAutenticacao, async(req,res) =>{
   formularioController.buscarInscricoes()
   .then((inscricoes) => {   
     Object.keys(inscricoes).forEach((codInscricao)=> {
@@ -62,7 +72,7 @@ router.get('/inscricoes', async(req,res) =>{
   })
 });
 
-router.get('/edt-formulario', (req, res) => {
+router.get('/edt-formulario',loginController.verificarAutenticacao, (req, res) => {
   formularioController.buscarFormularios()
     .then((formulario) => {
       formulario.data_inicio = formatarDataParaInputDate(formulario.data_inicio);
@@ -86,7 +96,7 @@ function formatarDataParaInputDate(dataString) {
   return dataString;
 }
 
-router.post('/atualizarFormulario', (req, res) => {
+router.post('/atualizarFormulario',loginController.verificarAutenticacao, (req, res) => {
   let formulario = {}
   formulario.descricao = req.body.descricao;
   formulario.valor = req.body.valor;

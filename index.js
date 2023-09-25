@@ -67,9 +67,6 @@ app.get('/logout', async (req, res) => {
       }
 });
 
-// app.get('/', loginController.verificarAutenticacao,(req, res) => {    
-//     res.render("index");
-// });
 app.get('/', (req, res) => {    
     res.render("index");
 });

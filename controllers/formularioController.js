@@ -3,6 +3,10 @@ const express = require("express");
 const router = express.Router();
 const db = require('../db');
 
+// app.get('/', loginController.verificarAutenticacao,(req, res) => {    
+//     res.render("index");
+// });
+
 function abrirCheckout(produto, req, res) {  
   return mercadopago.obterLinkPagamento(produto.title, produto.unit_price, produto.quantity)
     .then(linkPagamento => {            
