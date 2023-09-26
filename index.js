@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 
 app.use("/", rotas);
 
-app.listen(21093, () => {
+app.listen(21100, () => {
     console.log("Executando na porta 21093");
 });
 app.get('/login', (req, res) => {
