@@ -187,6 +187,13 @@ async function atualizarFormulario(formulario) {
   }
 }
 
+
+function converterStringParaData(dataString) {
+  const [dia, mes, ano] = dataString.split('/').map(Number);
+  return new Date(ano, mes - 1, dia);
+}
+
+
 async function criarInscricao(req, res) {
   const inscritos = req.body.inscritos;
   const cod_form = inscritos[0].formulario.cod_formulario;
@@ -208,13 +215,14 @@ async function criarInscricao(req, res) {
     
 
       for (const inscrito of inscritos) {
+        let data_nasc = converterStringParaData(inscrito.dataNascimento);
         db.query(
           'INSERT INTO inscrito (nome, email, telefone, dataNascimento, telefoneResponsavel, nomeResponsavel, bairroCongregacao, telefoneEmergencia, rua, numero, bairro, cidade, estado, lider, cod_inscricao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
           [
             inscrito.nome,
             inscrito.email,
             inscrito.telefone,
-            inscrito.dataNascimento,
+            data_nasc,
             inscrito.telefoneResponsavel,
             inscrito.nomeResponsavel,
             inscrito.bairroCongregacao,
