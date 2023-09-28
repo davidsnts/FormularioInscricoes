@@ -2,7 +2,7 @@ const mercadopago = require('mercadopago');
 
 mercadopago.configure({
   // access_token: 'TEST-4943873414212296-090613-c0dd61498eb845f83613e6ae8ad2e8e8-125345173',
-  access_token: 'APP_USR-4943873414212296-090613-4500c6599f0367509531f955c54e7d84-125345173',
+  access_token: 'APP_USR-621401509858145-092721-bcf8689372d9d85ad2aeb849d1f8f421-1488339296',
 });
 
 function buscarPagamentosAprovados() {
