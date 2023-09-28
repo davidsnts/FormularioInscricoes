@@ -35,6 +35,7 @@ CREATE TABLE inscrito (
     estado VARCHAR(2),
     lider VARCHAR(100),
     genero CHAR(1),
+    complemento varchar(100),
     FOREIGN KEY (cod_inscricao) REFERENCES inscricao(cod_inscricao)
 );
 

@@ -32,6 +32,7 @@
           <tr >
             <th>Inscrição</th>
             <th>Nome</th>
+            <th>Situação de Pagamento</th>
             <th>Email</th>
             <th>Telefone</th>
             <th>Data de Nascimento</th>
@@ -44,8 +45,7 @@
             <th>Bairro</th>
             <th>Cidade</th>
             <th>Estado</th>
-            <th>Líder</th>
-            <th>Situação de Pagamento</th>
+            <th>Líder</th>            
             <th>Link de Pagamento</th>
           </tr>
         </thead>
@@ -54,6 +54,7 @@
             <tr>
               <td><%= inscricao.inscricao %></td>
               <td><%= inscricao.nome %></td>
+              <td><%= inscricao.situacao_pagamento %></td>
               <td><%= inscricao.email %></td>
               <td><%= inscricao.telefone %></td>
               <td><%= inscricao.dataNascimento.toISOString().slice(0, 10) %></td>
@@ -66,8 +67,7 @@
               <td><%= inscricao.bairro %></td>
               <td><%= inscricao.cidade %></td>
               <td><%= inscricao.estado %></td>
-              <td><%= inscricao.lider %></td>
-              <td><%= inscricao.situacao_pagamento %></td>
+              <td><%= inscricao.lider %></td>              
               <td><%= inscricao.link_pagamento %></td>
             </tr>
           <% }); %>
@@ -110,6 +110,7 @@ function exportInscricoesToExcel() {
     { header: 'Situação de Pagamento', key: 'situacao_pagamento' },
     { header: 'Link de Pagamento', key: 'link_pagamento' },
     { header: 'Genero', key: 'genero' },
+    { header: 'Complemento', key: 'complemento' },
   ];
 
   inscricoes.forEach((inscricao) => {

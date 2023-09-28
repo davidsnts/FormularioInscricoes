@@ -217,7 +217,7 @@ async function criarInscricao(req, res) {
       for (const inscrito of inscritos) {
         let data_nasc = converterStringParaData(inscrito.dataNascimento);
         db.query(
-          'INSERT INTO inscrito (nome, email, telefone, dataNascimento, telefoneResponsavel, nomeResponsavel, bairroCongregacao, telefoneEmergencia, rua, numero, bairro, cidade, estado, lider, cod_inscricao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+          'INSERT INTO inscrito (nome, email, telefone, dataNascimento, telefoneResponsavel, nomeResponsavel, bairroCongregacao, telefoneEmergencia, rua, numero, bairro, cidade, estado, lider, cod_inscricao, complemento, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
           [
             inscrito.nome,
             inscrito.email,
@@ -233,7 +233,9 @@ async function criarInscricao(req, res) {
             inscrito.cidade,
             inscrito.estado,
             inscrito.lider,
-            cod_inscricao
+            cod_inscricao,
+            inscrito.complemento,
+            inscrito.genero
           ],
           (error, results, fields) => {
             if (error) {

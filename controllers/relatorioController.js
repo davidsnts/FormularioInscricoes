@@ -6,7 +6,7 @@ const db = require('../db');
 
 function buscarInscricoesAprovadas() {
   return new Promise((resolve, reject) => {
-    db.query(`select ii.cod_inscricao as inscricao, nome, email, telefone, dataNascimento, telefoneResponsavel, nomeResponsavel, bairroCongregacao, telefoneEmergencia, rua, numero, bairro, cidade, estado, lider, situacao_pagamento, link_pagamento, genero from inscrito i inner join inscricao ii on i.cod_inscricao = ii.cod_inscricao where ii.situacao_pagamento = 'approved'`, (error, results) => {
+    db.query(`select ii.cod_inscricao as inscricao, nome, email, telefone, dataNascimento, telefoneResponsavel, nomeResponsavel, bairroCongregacao, telefoneEmergencia, rua, numero, bairro, cidade, estado, lider, situacao_pagamento, link_pagamento, genero, complemento from inscrito i inner join inscricao ii on i.cod_inscricao = ii.cod_inscricao where ii.situacao_pagamento = 'approved'`, (error, results) => {
       if (error) {
         console.error({ error: 'Erro ao consultar o banco de dados.' });
         reject(error);

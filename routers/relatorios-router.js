@@ -13,6 +13,7 @@ router.get('/inscricoes_aprovadas', loginController.verificarAutenticacao,(req, 
                 if(inscricao.situacao_pagamento === 'approved'){
                     inscricao.situacao_pagamento = 'Pagamento aprovado'
                 }
+                console.log(inscricao);
             }      
             
             // console.log(inscricoes);

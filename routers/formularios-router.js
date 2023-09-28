@@ -6,8 +6,6 @@ const db = require('../db');
 const formularioController = require('../controllers/formularioController');
 const loginController = require('../controllers/loginController');
 
-
-
 router.get('/inscrever', (req, res) => {
   formularioController.buscarFormularios()
     .then((formulario) => {
@@ -47,7 +45,8 @@ router.get('/inscritos',loginController.verificarAutenticacao, async(req,res) =>
         const mes_inicio = data_nasc.getMonth() + 1;
         const ano_inicio = data_nasc.getFullYear();
         inscrito.dataNascimento = `${dia_inicio.toString().padStart(2, '0')}/${mes_inicio.toString().padStart(2, '0')}/${ano_inicio}`;
-        
+        inscrito.genero = (inscrito.genero === 'M') ? 'Másculino' : 'Feminino';
+        inscrito.complemento = (inscrito.complemento === null) ? 'Não informado' : inscrito.complemento;        
     }
     res.render('formularios/inscritos', { inscritos })
   })
