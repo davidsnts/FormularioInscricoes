@@ -27,6 +27,7 @@ router.post('/pagar', async (req, res) => {
 });
 router.post('/finalizarPagamento', async (req, res) => {
   try {
+    console.log(req.body);
     const linkRecebido = await formularioController.criarInscricao(req, res);  
     res.json({ linkPagamento: linkRecebido });
   } catch (error) {

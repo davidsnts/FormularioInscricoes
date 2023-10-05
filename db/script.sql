@@ -44,4 +44,16 @@ CREATE TABLE `usuario` (
   `email` varchar(100) DEFAULT NULL,
   `senha` varchar(100) DEFAULT NULL,
   `nome` varchar(100) DEFAULT NULL
-) 
+)
+
+CREATE TABLE `cupom` (
+  `cod_cupom` int(11) NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(100) NOT NULL,
+  `quantidade` int(11) NOT NULL,
+  `data_cadastro` date DEFAULT curdate(),
+  `data_fim` date NOT NULL,
+  `situacao` varchar(45) DEFAULT 'Ativo',
+  `desconto` decimal(4,2) NOT NULL,
+  PRIMARY KEY (`cod_cupom`),
+  UNIQUE KEY `codigo_UNIQUE` (`codigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;

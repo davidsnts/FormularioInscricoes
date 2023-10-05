@@ -1,4 +1,5 @@
 const mercadopago = require('../mercadopago/mercadopago');
+const cupomController = require('../controllers/cupomController');
 const express = require("express");
 const router = express.Router();
 const db = require('../db');
@@ -197,12 +198,23 @@ function converterStringParaData(dataString) {
 async function criarInscricao(req, res) {
   const inscritos = req.body.inscritos;
   const cod_form = inscritos[0].formulario.cod_formulario;
+  let cupom, produto;
   
-  const produto = {
-    quantity: inscritos.length,
-    unit_price: inscritos[0].formulario.valor,
-    title: inscritos[0].formulario.descricao
-  }
+  if (req.body.cupom != undefined){
+      cupom = req.body.cupom;
+      cupomController.subtrairRestanteCupom(cupom.codigo);      
+        produto = {
+        quantity: inscritos.length,
+        unit_price: ( inscritos[0].formulario.valor - cupom.desconto),
+        title: inscritos[0].formulario.descricao
+      }
+  }else{
+    produto = {
+      quantity: inscritos.length,
+      unit_price: inscritos[0].formulario.valor,
+      title: inscritos[0].formulario.descricao
+    }
+  } 
 
   try {
     const cod_inscricao = await inserirInscricao(cod_form);

@@ -1,0 +1,70 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/navbar') %>
+
+    <div class="container mt-5">
+        <h1>Cupons de Desconto</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Código do Cupom</th>
+                    <th>Quantidade</th>
+                    <th>Restante</th>
+                    <th>Data de Cadastro</th>
+                    <th>Data de Fim</th>
+                    <th>Situação</th>
+                    <th>Valor do Desconto</th>
+                    <th>Ação</th> 
+                    <th>Editar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i = 0; i < cupons.length; i++) { %>
+                    <tr>
+                        <td><%= cupons[i].codigo %></td>
+                        <td><%= cupons[i].quantidade %></td>
+                        <td><%= cupons[i].restante %></td>
+                        <td><%= cupons[i].data_cadastro %></td>
+                        <td><%= cupons[i].data_fim %></td>
+                        <td><%= cupons[i].situacao %></td>
+                        <td><%= cupons[i].desconto %></td>
+                        <td>
+        
+                            <button class="btn btn-primary" onclick="toggleCupom('<%= cupons[i].codigo %>', '<%= cupons[i].situacao %>')">
+                                <%= cupons[i].situacao === 'Ativo' ? 'Desativar' : 'Ativar' %>
+                            </button>
+                        </td>
+                        <td style="text-align: center; ">
+                            <a style="color: black;" href="/editar/<%= cupons[i].codigo %> ">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+       
+    </div>
+
+    
+
+    <script>
+        async function toggleCupom(codigo, situacao) {
+            const acao = situacao === 'Ativo' ? 'desativar' : 'ativar';
+            try {
+                const response = await fetch(`/cupons/${codigo}/${acao}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    console.error('Erro ao executar ação do cupom');
+                }
+            } catch (error) {
+                console.error('Erro ao executar ação do cupom:', error);
+            }
+        }
+    
+       
+    </script>
+<%- include ('../partials/footer') %>

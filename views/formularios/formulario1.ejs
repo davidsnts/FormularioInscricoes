@@ -65,16 +65,17 @@
               </div>
               <span> Bairro: </span>
               <input type="text" class="form-control mb-2" id="bairro" placeholder="Bairro" required />
-              
-              <div style="display: flex; gap: 10px;">                
+
+              <div style="display: flex; gap: 10px;">
                 <div>
                   <span class="">Cidade</span>
                   <input type="text" class="form-control mb-2" id="cidade" placeholder="Cidade" required />
                 </div>
-               <div>
+                <div>
                   <span class="">Apenas a UF (Ex. MG)</span>
-                  <input type="text" class="form-control mb-2" id="estado" maxlength="2" placeholder="Estado" required />
-               </div>              
+                  <input type="text" class="form-control mb-2" id="estado" maxlength="2" placeholder="Estado"
+                    required />
+                </div>
               </div>
 
             </div>
@@ -85,6 +86,13 @@
               <input type="text" class="form-control mb-2" id="lider" placeholder="Nome do líder" required />
               <input type="text" class="form-control mb-2" id="bairro-congregacao" placeholder="Bairro da congregação"
                 required />
+            </div>
+            <div class="input-group mb-3  ml-0 p-0">
+              <span class="input-group-text">
+                <i class="fas fa-ticket-alt"></i>
+              </span>
+              <input type="text" id="cupom-input-cupom" class="form-control" placeholder="Possui um cupom?">
+              <button class="btn btn-secondary" id="verificar-cupom" onclick="verificarCupom()">Verificar</button>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 10px;">
@@ -103,22 +111,42 @@
       </div>
     </div>
 
-
-
-
     <script>
+      let cupom;
 
+      async function verificarCupom() {
+        const codigoCupom = document.getElementById("cupom-input-cupom").value;
+
+        try {
+          const response = await fetch(`/verificar/${codigoCupom}`);
+          const data = await response.json();
+
+          if (response.status === 200) {
+            validarCupom(data); 
+          } else {
+            alert(data.message);
+          }
+        } catch (error) {          
+          alert("Ocorreu um erro ao verificar o código do cupom. Tente novamente mais tarde.");
+        }
+      }
+
+      function validarCupom(data) {        
+        document.getElementById("cupom-input-cupom").disabled = true;
+        cupom = data;
+        alert(`Cupom verificado! Desconto de: R$ ${data.desconto}!`);        
+      }
       const input = document.getElementById("dataNascimento");
 
       input.addEventListener("input", function () {
-            let value = input.value.replace(/\D/g, ""); 
-            if (value.length > 2) {
-                value = value.substring(0, 2) + "/" + value.substring(2);
-            }
-            if (value.length > 5) {
-                value = value.substring(0, 5) + "/" + value.substring(5);
-            }
-            input.value = value;
+        let value = input.value.replace(/\D/g, "");
+        if (value.length > 2) {
+          value = value.substring(0, 2) + "/" + value.substring(2);
+        }
+        if (value.length > 5) {
+          value = value.substring(0, 5) + "/" + value.substring(5);
+        }
+        input.value = value;
       });
 
       let inscritos = [];
@@ -143,8 +171,8 @@
           inscrito.telefoneResponsavel = document.getElementById('telefoneResponsavel').value;
           inscrito.nomeResponsavel = document.getElementById('nomeResponsavel').value;
           inscrito.complemento = document.getElementById('complemento').value;
-          inscrito.genero = document.querySelector('input[name="genero"]:checked').value;         
-           
+          inscrito.genero = document.querySelector('input[name="genero"]:checked').value;
+
           inscritos.push(inscrito);
           if (criarNovamente === 'sim') {
             limparCampos();
@@ -195,21 +223,21 @@
 
           if (idade >= 1 && idade <= 120) { // Verificação do range de idade
             if (idade >= 18) {
-                telResponsavel.style.display = 'none';
-                nomeResponsavel.style.display = 'none';
-                nomeResponsavel.removeAttribute('required');
-                telResponsavel.removeAttribute('required');
+              telResponsavel.style.display = 'none';
+              nomeResponsavel.style.display = 'none';
+              nomeResponsavel.removeAttribute('required');
+              telResponsavel.removeAttribute('required');
             } else {
-                telResponsavel.style.display = 'block';
-                nomeResponsavel.style.display = 'block';
-                nomeResponsavel.setAttribute('required', 'true');
-                telResponsavel.setAttribute('required', 'true');
+              telResponsavel.style.display = 'block';
+              nomeResponsavel.style.display = 'block';
+              nomeResponsavel.setAttribute('required', 'true');
+              telResponsavel.setAttribute('required', 'true');
             }
-        } else {
+          } else {
             alert('A idade deve estar entre 1 e 120 anos.');
             document.getElementById("dataNascimento").value = "";
             document.getElementById("dataNascimento").focus();
-        }
+          }
         }
       }
       function verificarCamposPreenchidos() {
@@ -241,11 +269,19 @@
       }
 
       function salvar() {
+        let data;
         if (verificarCamposPreenchidos()) {
           const url = '/finalizarPagamento';
-          const data = {
+          if (cupom != undefined) {
+            data = {
+            inscritos, cupom
+          };
+          } else {
+            data = {
             inscritos
           };
+          }
+          
           inscritos = [];
           const options = {
             method: 'POST',

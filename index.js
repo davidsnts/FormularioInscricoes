@@ -22,7 +22,8 @@ app.use(bodyParser.json());
 const formularios_router = require('./routers/formularios-router');
 const relatorios_router = require('./routers/relatorios-router');
 const loginController = require('./controllers/loginController');
-const rotas = [ formularios_router, relatorios_router ];
+const cupons_router = require('./routers/cupons-router');
+const rotas = [ formularios_router, relatorios_router, cupons_router ];
 
 app.use(session({
     secret: '2h$9jL3@9P*F4o1I',
@@ -38,7 +39,7 @@ app.use((req, res, next) => {
 app.use("/", rotas);
 
 app.listen(21100, () => {
-    console.log("Executando na porta 21093");
+    console.log("Executando na porta 21100");
 });
 app.get('/login', (req, res) => {
     res.render("login");

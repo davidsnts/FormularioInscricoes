@@ -1,0 +1,28 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/navbar') %>
+
+<div class="mt-4 container" style="margin-bottom: 80px;">
+    <h2>Editar Cupom</h2>
+    <form id="editarCupomForm" method="post" action="/editar">
+        <div class="mb-3">
+            <label for="codigo" class="form-label">Código do Cupom</label>
+            <input type="text" class="form-control" id="codigo" name="codigo" value="<%= cupom.codigo %>" disabled>
+        </div>
+        
+        <div class="mb-3">
+            <label for="quantidade" class="form-label">Quantidade</label>
+            <input type="number" class="form-control" id="quantidade" name="quantidade" value="<%= cupom.quantidade %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="dataFim" class="form-label">Data de Fim</label>
+            <input type="date" class="form-control" id="dataFim" name="dataFim" value="<%= cupom.data_fim %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="desconto" class="form-label">Valor do Desconto</label>
+            <input type="text" class="form-control" id="desconto" name="desconto" value="<%= cupom.desconto %>" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Alterar</button>
+    </form>
+</div>
+
+<%- include ('../partials/footer') %>
