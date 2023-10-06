@@ -8,14 +8,19 @@ CREATE TABLE formulario (
     data_fim DATE
 );
 
-CREATE TABLE inscricao (
-    cod_inscricao INT AUTO_INCREMENT PRIMARY KEY,
-    situacao_pagamento VARCHAR(50),
-    cod_formulario INT,
-    link_pagamento VARCHAR(255),
-    id_transacao VARCHAR(255),
-    FOREIGN KEY (cod_formulario) REFERENCES formulario(cod_formulario)
-);
+CREATE TABLE `inscricao` (
+  `cod_inscricao` int(11) NOT NULL AUTO_INCREMENT,
+  `situacao_pagamento` varchar(50) DEFAULT NULL,
+  `cod_formulario` int(11) DEFAULT NULL,
+  `link_pagamento` varchar(255) DEFAULT NULL,
+  `id_transacao` varchar(255) DEFAULT NULL,
+  `desconto` decimal(4,2) DEFAULT 0.00,
+  `total_pago` decimal(4,2) DEFAULT 0.00,
+  PRIMARY KEY (`cod_inscricao`),
+  KEY `cod_formulario` (`cod_formulario`),
+  CONSTRAINT `inscricao_ibfk_1` FOREIGN KEY (`cod_formulario`) REFERENCES `formulario` (`cod_formulario`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
 
 CREATE TABLE inscrito (
     cod_inscrito INT AUTO_INCREMENT PRIMARY KEY,

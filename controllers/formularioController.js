@@ -70,7 +70,7 @@ function buscarInscricoes() {
     });
 
   return new Promise((resolve, reject) => {
-    db.query('SELECT ic.cod_inscricao, situacao_pagamento, i.nome, link_pagamento FROM inscricao ic left join inscrito i on i.cod_inscricao = ic.cod_inscricao;', (error, results) => {
+    db.query('SELECT ic.cod_inscricao, situacao_pagamento, i.nome, link_pagamento, desconto, total_pagar FROM inscricao ic left join inscrito i on i.cod_inscricao = ic.cod_inscricao;', (error, results) => {
       if (error) {
         console.error({ error: 'Erro ao consultar o banco de dados.' });
         reject(error);
@@ -88,8 +88,10 @@ function buscarInscricoes() {
         inscricoes[codInscricao].push({
           situacao_pagamento: inscricao.situacao_pagamento,
           link_pagamento: inscricao.link_pagamento,
-          nome: inscricao.nome
-        });
+          nome: inscricao.nome,
+          desconto: inscricao.desconto,
+          pagar: inscricao.total_pagar
+        });        
       }
 
       resolve(inscricoes);
@@ -200,13 +202,16 @@ async function criarInscricao(req, res) {
   const cod_form = inscritos[0].formulario.cod_formulario;
   let cupom, produto;
   
+  
   if (req.body.cupom != undefined){
       cupom = req.body.cupom;
       cupomController.subtrairRestanteCupom(cupom.codigo);      
+
+      const precoTotal = (inscritos[0].formulario.valor * inscritos.length) - cupom.desconto;
         produto = {
-        quantity: inscritos.length,
-        unit_price: ( inscritos[0].formulario.valor - cupom.desconto),
-        title: inscritos[0].formulario.descricao
+        quantity: 1,
+        unit_price: precoTotal,
+        title: inscritos[0].formulario.descricao + `Desconto de R$ ${cupom.desconto}`
       }
   }else{
     produto = {
@@ -219,12 +224,7 @@ async function criarInscricao(req, res) {
   try {
     const cod_inscricao = await inserirInscricao(cod_form);
     
-    produto.title = produto.title + ' #' + cod_inscricao;
-
-    
-
-    
-    
+    produto.title = produto.title + ' #' + cod_inscricao;     
 
       for (const inscrito of inscritos) {
         let data_nasc = converterStringParaData(inscrito.dataNascimento);
@@ -264,17 +264,32 @@ async function criarInscricao(req, res) {
         const linkPagamento = await abrirCheckout(produto, req, res);
         
         // console.log(linkPagamento);
+        if (req.body.cupom != undefined){
+          const valorpagar = parseFloat((inscritos[0].formulario.valor * inscritos.length) - cupom.desconto);
+          console.log(valorpagar);
+          db.query(
+            'UPDATE inscricao SET link_pagamento = ?, desconto = ?, total_pagar = ? WHERE cod_inscricao = ?',
+            [linkPagamento.init_point,req.body.cupom.desconto,parseFloat(valorpagar), cod_inscricao],
+            (error, results, fields) => {
+              if (error) {
+                console.error('Erro ao executar a atualização:', error);
+                return;
+              }            
+            }
+          );
+        }else{
+          db.query(
+            'UPDATE inscricao SET link_pagamento = ?, total_pagar = ? WHERE cod_inscricao = ?',
+            [linkPagamento.init_point,(parseFloat(produto.unit_price)*parseFloat(produto.quantity)), cod_inscricao],
+            (error, results, fields) => {
+              if (error) {
+                console.error('Erro ao executar a atualização:', error);
+                return;
+              }            
+            }
+          );
+        }
         
-        db.query(
-          'UPDATE inscricao SET link_pagamento = ? WHERE cod_inscricao = ?',
-          [linkPagamento.init_point, cod_inscricao],
-          (error, results, fields) => {
-            if (error) {
-              console.error('Erro ao executar a atualização:', error);
-              return;
-            }            
-          }
-        );
 
         return linkPagamento.init_point;
       } catch (error) {

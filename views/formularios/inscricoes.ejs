@@ -19,6 +19,8 @@
                         <tr>
                             <th style="text-align: center; vertical-align: middle;">#Inscrição</th>
                             <th style="text-align: center; vertical-align: middle;">Situação do pagamento</th>
+                            <th style="text-align: center; vertical-align: middle;">Total pagamento</th>
+                            <th style="text-align: center; vertical-align: middle;">Desconto</th>
                             <th style="text-align: center; vertical-align: middle;">Nomes</th>
                             <th style="text-align: center; vertical-align: middle;">Link pagamento</th>
                             <th style="text-align: center; vertical-align: middle;">Detalhes</th>
@@ -33,6 +35,12 @@
                                 </td>
                                 <td style="text-align: center; vertical-align: middle;">
                                     <%= inscricoes[codInscricao][0].situacao_pagamento %>
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    R$ <%= inscricoes[codInscricao][0].pagar %>
+                                 </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                   R$ <%= inscricoes[codInscricao][0].desconto %>
                                 </td>
                                 <td>
                                     <ul>

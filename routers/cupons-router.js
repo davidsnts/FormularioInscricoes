@@ -83,29 +83,28 @@ router.get('/cad-cupom', loginController.verificarAutenticacao, (req, res) => {
 });
 
 router.get('/editar/:codigo', async (req, res) => {
+   
     const codigo = req.params.codigo;
     
-    let cupom  = await  cupomController.buscarCuponsCodigo(codigo);
-    console.log(cupom);
+    let cupom  = await  cupomController.buscarCuponsCodigo(codigo);      
 
-    res.render('cupom/edt-cupom', { cupom }); // Renderize a página de edição com os dados do cupom
+    res.render('cupom/edt-cupom', { cupom, codigo }); // Renderize a página de edição com os dados do cupom
 });
 
 router.post('/editar', async (req, res) => {
-    const codigo = req.params.codigo;
+       
 
     const cupomAtualizado = {
-        codigo: req.body.codigo,
+        codigo: req.body.cod,
         quantidade: req.body.quantidade,
+        restante: req.body.restante,
         data_fim: req.body.dataFim,
         desconto: req.body.desconto,
-    };
-
-    console.log(req.body);
+    }; 
 
     try {
         
-        const resultado = await cupomController.atualizarCupom(req.body.codigo, cupomAtualizado);
+        const resultado = await cupomController.atualizarCupom(cupomAtualizado.codigo, cupomAtualizado);
         
         if (resultado) {
             console.log('Cupom atualizado com sucesso:', resultado);

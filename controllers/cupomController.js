@@ -107,6 +107,7 @@ async function atualizarCupom(codigo, cupomAtualizado) {
               SET
                   codigo = ?,
                   quantidade = ?,
+                  restante = ?,
                   data_fim = ?,
                   desconto = ?
               WHERE
@@ -116,6 +117,7 @@ async function atualizarCupom(codigo, cupomAtualizado) {
           const params = [
               cupomAtualizado.codigo,
               cupomAtualizado.quantidade,
+              cupomAtualizado.restante,
               cupomAtualizado.data_fim,
               cupomAtualizado.desconto,
               codigo,

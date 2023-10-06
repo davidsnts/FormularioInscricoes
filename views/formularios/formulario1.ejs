@@ -6,8 +6,9 @@
       <div class="card" style="border-radius: 10px;">
         <div class="card-header bg-info text-light"
           style="display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; border-top-left-radius: 10px; border-top-right-radius: 10px;">
-          <h6 class="mb-2">
-            <%= formulario.descricao %>
+          <h6 class="mb-2" style="display: flex; justify-content: space-between; gap: 10px; width: 100%;" >
+            <div><%= formulario.descricao %> </div> 
+            <div>Valor inscrição: R$ <%=formulario.valor %></div>
           </h6>
           <h7> Inscrições de <%= formulario.data_inicio %> até <%= formulario.data_fim %>
           </h7>
@@ -131,8 +132,10 @@
         }
       }
 
-      function validarCupom(data) {        
+      function validarCupom(data) {  
+        cupom = {};      
         document.getElementById("cupom-input-cupom").disabled = true;
+        document.getElementById("verificar-cupom").disabled = true;
         cupom = data;
         alert(`Cupom verificado! Desconto de: R$ ${data.desconto}!`);        
       }
@@ -350,9 +353,7 @@
           telefone.focus();
         }
       })
-
-
-
+      
     </script>
 
     <%- include ('../partials/footer') %>
