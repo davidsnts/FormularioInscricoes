@@ -25,6 +25,14 @@ router.post('/pagar', async (req, res) => {
     res.status(500).json({ error: 'Erro ao finalizar pagamento' });
   }
 });
+
+router.get('/DescontoTotal', (req, res) => {
+  
+      res.render('formularios/descontoTotal');
+    
+});
+
+
 router.post('/finalizarPagamento', async (req, res) => {
   try {
     console.log(req.body);

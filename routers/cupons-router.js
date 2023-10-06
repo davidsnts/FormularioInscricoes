@@ -20,16 +20,16 @@ router.get('/cupons', loginController.verificarAutenticacao, (req, res) => {
             res.render('cupom/cupom', { cupons });
         })
         .catch((error) => {
-            console.error('Erro ao buscar formulários:', error);
+            console.error('Erro ao buscar CUPONS:', error);
         });
 });
 
 router.get('/verificar/:codigo', (req, res) => {
     const codigo = req.params.codigo;
     console.log(codigo);
-    cupomController.verificarCupom(codigo, req,res)
-        .then((cupom) => {            
-            
+    cupomController.verificarCupom(codigo, req, res)
+        .then((cupom) => {
+
         })
         .catch((error) => {
             console.error('Erro ao buscar cupom:', error);
@@ -47,68 +47,94 @@ function formatarData(data) {
 router.post('/cupons/:codigo/:acao', async (req, res) => {
     const codigo = req.params.codigo;
     const acao = req.params.acao === 'ativar' ? true : false;
-  
+
     try {
-      const cupomAtualizado = await cupomController.ativarDesativarCupom(codigo, acao);
-   
-      res.json(cupomAtualizado);
+        const cupomAtualizado = await cupomController.ativarDesativarCupom(codigo, acao);
+
+        res.json(cupomAtualizado);
     } catch (error) {
-      res.status(404).json(error);
+        res.status(404).json(error);
     }
 });
 
-router.post('/cad-cupom', async (req, res) =>{
-    
+router.post('/cad-cupom', async (req, res) => {
+
     const novoCupom = {
         codigo: req.body.codigo,
         quantidade: req.body.quantidade,
         data_fim: req.body.dataFim,
-        situacao: 'Ativo', 
+        situacao: 'Ativo',
         desconto: req.body.desconto,
         restante: 1,
     };
 
-    console.log(novoCupom);
     cupomController.cadastrarCupom(novoCupom)
-    .then((cupomCadastrado) => {
-      console.log('Cupom cadastrado com sucesso:', cupomCadastrado);
-    })
-    .catch((error) => {
-      console.error('Erro ao cadastrar o cupom:', error);
-    });
+        .then((cupomCadastrado) => {
+            cupomController.buscarCupons()
+                .then((cupons) => {
+                    for (const cupom of cupons) {
+                        cupom.data_cadastro = formatarData(cupom.data_cadastro);
+                        cupom.data_fim = formatarData(cupom.data_fim);
+                    }
+                    res.render('cupom/cupom', { cupons });
+                })
+                .catch((error) => {
+                    console.error('Erro ao buscar CUPONS:', error);
+                });
+        })
+        .catch((error) => {
+            console.error('Erro ao cadastrar o cupom:', error);
+        });
 });
 
 router.get('/cad-cupom', loginController.verificarAutenticacao, (req, res) => {
-    res.render('cupom/cad-cupom');        
+    res.render('cupom/cad-cupom');
 });
 
 router.get('/editar/:codigo', async (req, res) => {
-   
+
     const codigo = req.params.codigo;
-    
-    let cupom  = await  cupomController.buscarCuponsCodigo(codigo);      
+
+    let cupom = await cupomController.buscarCuponsCodigo(codigo);
 
     res.render('cupom/edt-cupom', { cupom, codigo }); // Renderize a página de edição com os dados do cupom
 });
 
-router.post('/editar', async (req, res) => {
-       
+router.get('/apagar/:codigo', async (req, res) => {
 
+    const codigo = req.params.codigo;
+
+    await cupomController.apagarCupom(codigo);
+
+    cupomController.buscarCupons()
+        .then((cupons) => {
+            for (const cupom of cupons) {
+                cupom.data_cadastro = formatarData(cupom.data_cadastro);
+                cupom.data_fim = formatarData(cupom.data_fim);
+            }
+            res.render('cupom/cupom', { cupons });
+        })
+        .catch((error) => {
+            console.error('Erro ao buscar CUPONS:', error);
+        });
+});
+
+router.post('/editar', async (req, res) => {
     const cupomAtualizado = {
         codigo: req.body.cod,
         quantidade: req.body.quantidade,
         restante: req.body.restante,
         data_fim: req.body.dataFim,
         desconto: req.body.desconto,
-    }; 
+    };
 
     try {
-        
+
         const resultado = await cupomController.atualizarCupom(cupomAtualizado.codigo, cupomAtualizado);
-        
+
         if (resultado) {
             console.log('Cupom atualizado com sucesso:', resultado);
-            res.redirect('/cupons'); 
+            res.redirect('/cupons');
         } else {
             res.status(404).send('Cupom não encontrado');
         }

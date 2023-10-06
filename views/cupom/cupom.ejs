@@ -15,6 +15,7 @@
                     <th>Valor do Desconto</th>
                     <th>Ação</th> 
                     <th>Editar</th>
+                    <th>Apagar</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,6 +37,11 @@
                         <td style="text-align: center; ">
                             <a style="color: black;" href="/editar/<%= cupons[i].codigo %> ">
                                 <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                        <td style="text-align: center; ">
+                            <a style="color: black;" href="/apagar/<%= cupons[i].codigo %> ">
+                                <i class="fas fa-trash"></i>
                             </a>
                         </td>
                     </tr>

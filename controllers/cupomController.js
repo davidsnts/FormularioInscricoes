@@ -49,6 +49,24 @@ async function ativarDesativarCupom(codigo, ativar) {
   }
 }
 
+async function apagarCupom(codigo) {
+  try {    
+    const cupom = await buscarCuponsCodigo(codigo);
+
+    if (!cupom) {
+      return { message: 'Cupom não encontrado' };
+    }
+    db.query('delete from cupom WHERE codigo = ?', [codigo], (error, results) => {
+    if (error) {
+      console.error('Erro ao atualizar status da inscrição:', error);
+      throw error;
+    }
+    });   
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function verificarCupom(codigo,req,res) {
   try {    
     const cupom = await buscarCuponsCodigo(codigo);
@@ -139,4 +157,4 @@ async function atualizarCupom(codigo, cupomAtualizado) {
   }
 }
 
-module.exports = { buscarCupons, buscarCuponsCodigo, ativarDesativarCupom, verificarCupom, subtrairRestanteCupom,cadastrarCupom, atualizarCupom };
+module.exports = { buscarCupons, buscarCuponsCodigo, ativarDesativarCupom, verificarCupom, subtrairRestanteCupom,cadastrarCupom, atualizarCupom, apagarCupom };
