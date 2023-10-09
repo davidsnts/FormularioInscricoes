@@ -121,6 +121,28 @@ async function atualizarStatusInscricao(id, novoStatus) {
   });
 }
 
+async function deletarInscricao(id) {
+  return new Promise((resolve, reject) => {
+    db.query('delete from inscrito i join inscricao ic on i.cod_inscricao = ic.cod_inscricao where ic.cod_inscricao = ?', [id], (error, results) => {
+      if (error) {
+        console.error('Erro ao atualizar status da inscrição:', error);
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+    db.query('delete FROM inscricao where cod_inscricao = ?', [id], (error, results) => {
+      if (error) {
+        console.error('Erro ao atualizar status da inscrição:', error);
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
+
 function buscarFormularios() {
   return new Promise((resolve, reject) => {
     db.connect((err) => {
