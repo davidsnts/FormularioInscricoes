@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const formularioController = require('./controllers/formularioController');
+const mercadopago = require('./mercadopago/mercadopago');
 
 function integrarPagamentosMP(){
     formularioController.buscarInscricoes()
@@ -15,6 +16,7 @@ function integrarPagamentosMP(){
 }
 
 setInterval(integrarPagamentosMP, 60000);
+// setInterval(mercadopago.buscarPagamentos, 4000);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

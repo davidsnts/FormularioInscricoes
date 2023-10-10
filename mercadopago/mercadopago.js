@@ -61,7 +61,55 @@ function obterLinkPagamento(title, preco, quantity) {
   });
 }
 
-module.exports = { obterLinkPagamento, buscarPagamentosAprovados };
+function buscarPagamentos() {
+  return new Promise((resolve, reject) => {
+    var filters = {
+      range: 'date_created',
+      begin_date: 'NOW-1MONTH',
+      end_date: 'NOW',
+      operation_type: 'regular_payment'
+    };
+
+    mercadopago.payment.search({
+      qs: filters
+    }).then(function (data) {
+      const pagamentos = data.body.results;
+      console.log(pagamentos);
+      resolve(pagamentos);
+    }).catch(function (error) {
+      reject(error);
+    });
+  });
+}
+
+function realizarReembolso(paymentId, valorReembolso) {
+  return new Promise((resolve, reject) => {
+    const refundData = {
+      amount: valorReembolso,
+    };
+
+    mercadopago.payment.refund(paymentId, refundData)
+      .then(refundResponse => {
+        console.log('Reembolso realizado com sucesso:', refundResponse);
+        resolve(refundResponse);
+      })
+      .catch(error => {
+        console.log('Erro ao realizar o reembolso:', error);
+        reject(error);
+      });
+  });
+}
+// const transactionId = '65045392732';
+// const valorReembolso = 1;
+// realizarReembolso(transactionId, valorReembolso)
+//   .then(response => {
+//     console.log(response);
+//   })
+//   .catch(error => {
+//     console.log(error);
+//   });
+
+module.exports = { obterLinkPagamento, buscarPagamentosAprovados, buscarPagamentos, realizarReembolso };
 
 
 

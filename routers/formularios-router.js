@@ -26,10 +26,8 @@ router.post('/pagar', async (req, res) => {
   }
 });
 
-router.get('/DescontoTotal', (req, res) => {
-  
-      res.render('formularios/descontoTotal');
-    
+router.get('/DescontoTotal', (req, res) => {  
+      res.render('formularios/descontoTotal');    
 });
 
 
@@ -113,6 +111,18 @@ router.post('/atualizarFormulario',loginController.verificarAutenticacao, (req, 
   formulario.cod_formulario = req.body.cod_formulario;
   formularioController.atualizarFormulario(formulario);
   res.send('Dados alterados com sucesso!');
+});
+
+router.get('/apagar-inscricao/:codigo', async (req, res) => {
+  const codigo = req.params.codigo;  
+  await formularioController.deletarInscricao(codigo);
+  res.status(200).send({ codigo: codigo });  
+});
+
+router.get('/aprovar-inscricao/:codigo', async (req, res) => {
+  const codigo = req.params.codigo;  
+  await formularioController.aprovarInscricao(codigo);
+  res.status(200).send({ codigo: codigo });  
 });
 
 module.exports = router;

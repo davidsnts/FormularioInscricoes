@@ -123,15 +123,50 @@ async function atualizarStatusInscricao(id, novoStatus) {
 
 async function deletarInscricao(id) {
   return new Promise((resolve, reject) => {
-    db.query('delete from inscrito i join inscricao ic on i.cod_inscricao = ic.cod_inscricao where ic.cod_inscricao = ?', [id], (error, results) => {
-      if (error) {
-        console.error('Erro ao atualizar status da inscrição:', error);
-        reject(error);
-      } else {
-        resolve();
-      }
+    db.beginTransaction((err) => {
+      if (err) {
+        console.error('Erro ao iniciar a transação:', err);
+        reject(err);
+        return;
+      }     
+      db.query('DELETE FROM inscrito WHERE cod_inscricao = ?', [id], (error1) => {
+        if (error1) {
+          console.error('Erro ao excluir inscrito:', error1);
+          db.rollback(() => {
+            reject(error1);
+          });
+          return;
+        }        
+        db.query('DELETE FROM inscricao WHERE cod_inscricao = ?', [id], (error2) => {
+          if (error2) {
+            console.error('Erro ao excluir inscrição:', error2);
+            db.rollback(() => {
+              reject(error2);
+            });
+            return;
+          }          
+          db.commit((commitError) => {
+            if (commitError) {
+              console.error('Erro ao cometer a transação:', commitError);
+              db.rollback(() => {
+                reject(commitError);
+              });
+            } else {
+              resolve();
+            }
+          });
+        });
+      });
     });
-    db.query('delete FROM inscricao where cod_inscricao = ?', [id], (error, results) => {
+  });
+}
+
+
+async function aprovarInscricao(id) {
+  const novoStatus = 'approved';
+  const desconto = 'DescontoTotal';
+  return new Promise((resolve, reject) => {
+    db.query('UPDATE inscricao SET situacao_pagamento = ?, link_pagamento = ? WHERE cod_inscricao = ?', [novoStatus, desconto, id], (error, results) => {
       if (error) {
         console.error('Erro ao atualizar status da inscrição:', error);
         reject(error);
@@ -141,7 +176,6 @@ async function deletarInscricao(id) {
     });
   });
 }
-
 
 function buscarFormularios() {
   return new Promise((resolve, reject) => {
@@ -386,4 +420,4 @@ function inserirInscricao(cod_form, descontoTotal) {
   }
 }
 
-module.exports = { abrirCheckout, buscarFormularios, atualizarFormulario, criarInscricao, buscarInscritos, buscarInscricoes };
+module.exports = { abrirCheckout, buscarFormularios, atualizarFormulario, criarInscricao, buscarInscritos, buscarInscricoes, deletarInscricao, aprovarInscricao };
