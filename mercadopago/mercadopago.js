@@ -7,13 +7,25 @@ mercadopago.configure({
 
 function buscarPagamentosAprovados() {
   return new Promise((resolve, reject) => {
-    var filters = {
+    const currentDate = new Date();
+    const startDate = new Date(currentDate);
+    startDate.setDate(currentDate.getDate() - 1);
+
+    const filters = {
       range: 'date_created',
-      begin_date: 'NOW-1MONTH',
-      end_date: 'NOW',
+      begin_date: startDate.toISOString(),
+      end_date: currentDate.toISOString(),
       status: 'approved',
       operation_type: 'regular_payment'
     };
+    
+    // var filters = {
+    //   range: 'date_created',
+    //   begin_date: 'NOW-1WEEK',
+    //   end_date: 'NOW',
+    //   status: 'approved',
+    //   operation_type: 'regular_payment'
+    // };
 
     mercadopago.payment.search({
       qs: filters
@@ -26,6 +38,7 @@ function buscarPagamentosAprovados() {
           inscricao: pagamento.description,
           statusPagamento: pagamento.status
         };
+        
         pagamentosFiltrados.push(pagamentoFiltrado);
       }
 
@@ -99,6 +112,8 @@ function realizarReembolso(paymentId, valorReembolso) {
       });
   });
 }
+
+// console.log(buscarPagamentos());
 // const transactionId = '65045392732';
 // const valorReembolso = 1;
 // realizarReembolso(transactionId, valorReembolso)
