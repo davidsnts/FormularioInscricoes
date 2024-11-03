@@ -1,34 +1,18 @@
 <%- include ('partials/header') %>
 <%- include ('partials/navbar') %>
 
-    <div style="display: flex; flex-direction: column;  gap: 1rem; align-items: center; justify-content: center;" class="w-100 mt-3 col hstack">
-        <h1 class="text-dark" style="font-weight: lighter;">Nossos eventos</h1>
-       
-        <!-- <div class="item-1 card">
-            <div class="card-header bg-dark text-light">
-                <span>Gostaria de participar dos nossos eventos?</span>
-            </div>
-            <div class="card-body"  style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem;">
-                <div>
-                    <img src="img/retiro-2024.png" width="300px" height="200px" alt="" srcset="">
-                </div>
-                <div class="w-100">
-                    <a href="/inscrever" role="button" class="btn btn-dark rounded-0 fw-bold w-100">Realize sua inscrição aqui</a>                    
-                </div>                
-            </div>
-        </div> -->
-        
-        <div class="col" style="display: flex; justify-content: center;">
-            <div class="card border" style="max-width: 70vh; max-height: 50vh;">
-              <img src="img/retiro-2024.png"  alt="" srcset="">
-              <div class="card-body" style="display: flex; align-items: center; justify-content: center; flex-direction: column; width: 100%;">
-                <p class="fs-5">Geração eleita - 2024.</p>
-                <!-- <h5 class="card-title"><a href="/inscrever" role="button" class="btn btn-danger rounded-0 fw-bold float-right">Realize sua inscrição aqui</a></h5>                 -->
-                <img style=" width: 100%;" height="80" src="img/encerramento.png"  alt="" srcset="">
-              </div>
-            </div>
-          </div>
+<div class="container mt-5 d-flex flex-column align-items-center gap-4" style="overflow-x: hidden;">
+    <h4 class="text-dark" style="font-weight: lighter ;">Prepare-se para um evento inesquecível com a <br><center> Geração Eleita!</center></h4>
+    
+   
+    <div class="card border-0 shadow" style="width: 100%; max-width: 500px;">
+        <img src="/img/paisagem.jpeg" class="card-img-top img-fluid" style="width: 100%; height: auto; object-fit: cover;" alt="Evento 2025">
+        <div class="card-body d-flex flex-column align-items-center">
+            <p class="fs-4 text-center">Geração Eleita - Acampamento 2025</p>
+            <a href="/inscrever" role="button" class="btn rounded-0 fw-bold w-100 mt-3" style="background-color: #070604; color: white;">Realize sua inscrição aqui</a>                    
+        </div>
     </div>
-        
+</div>
 
 <%- include ('partials/footer') %>
+
